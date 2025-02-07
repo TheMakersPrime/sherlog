@@ -1,0 +1,9 @@
+# IntelliJ
+.idea/
+
+# Vscode
+.vscode/
+
+# Dart
+.dart_tool/
+pubspec.lock
