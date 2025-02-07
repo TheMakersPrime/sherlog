@@ -1,6 +1,7 @@
 // Copyright (c) 2025 TheMakersPrime Authors. All rights reserved.
 
 import 'package:logger/logger.dart';
+import 'package:sherlog/sherlog.dart';
 
 const _headerTopLeft = '╔╣';
 const _topLeft = '╔';
@@ -12,9 +13,9 @@ const _horizontal = '═';
 class Sherlog {
   Sherlog({
     this.lineLength = 100,
-    this.level = Level.trace,
+    this.level = LogLevel.trace,
   }) : _logger = Logger(
-          level: level,
+          level: level.loggerLevel,
           printer: PrettyPrinter(
             methodCount: 0,
             noBoxingByDefault: true,
@@ -23,9 +24,10 @@ class Sherlog {
           ),
         );
 
-  final Logger _logger;
   final int lineLength;
-  final Level level;
+  final LogLevel level;
+
+  final Logger _logger;
 
   void info(
     Object message, {
