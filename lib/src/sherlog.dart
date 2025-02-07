@@ -1,5 +1,7 @@
 // Copyright (c) 2025 TheMakersPrime Authors. All rights reserved.
 
+import 'dart:convert';
+
 import 'package:logger/logger.dart';
 import 'package:sherlog/sherlog.dart';
 
@@ -54,6 +56,7 @@ class Sherlog {
     Object? detail,
     StackTrace? stackTrace,
   }) {
+    final prettyMessage = _prettifyText(message);
     if (headers.isNotEmpty) {
       final headerOutput = headers.join(' $_shortVertical ');
       final header = '$_headerTopLeft $headerOutput $_shortVertical';
@@ -64,10 +67,40 @@ class Sherlog {
       _logger.log(level, '$_topLeft${_horizontal * (lineLength - 1)}');
     }
     // TODO (Ishwor) Break message to fit the line length
-    _logger.log(level, '$_vertical $message');
+    _logger.log(level, '$_vertical $prettyMessage');
 
     if (includeSeparation) {
       _logger.log(level, '$_bottomLeft${_horizontal * (lineLength - 1)}');
     }
+  }
+
+  String _prettifyText(dynamic text) {
+    final String pretty;
+
+    if (text is List || text is Map) {
+      pretty = JsonEncoder.withIndent('   ').convert(text);
+    } else {
+      pretty = text;
+    }
+
+    final parts = pretty.split('\n');
+
+    if (parts.length == 1) return _wrapText(pretty);
+
+    final buffer = StringBuffer();
+
+    for (final (index, part) in parts.indexed) {
+      if (index == parts.length - 1) {
+        buffer.writeln('  ${_wrapText(part)}');
+      } else {
+        buffer.writeln(_wrapText(part));
+      }
+    }
+
+    return buffer.toString().trimRight();
+  }
+
+  String _wrapText(String text) {
+    return text;
   }
 }
