@@ -1,3 +1,5 @@
+// Copyright (c) 2025 TheMakersPrime Authors. All rights reserved.
+
 enum ConsoleColor {
   black(0),
   red(196),
