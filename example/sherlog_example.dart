@@ -3,7 +3,10 @@
 import 'package:sherlog/sherlog.dart';
 
 void main() {
-  final sherlog = Sherlog(lineLength: 100);
+  final sherlog = Sherlog(
+    level: LogLevel.all,
+    lineLength: 100,
+  );
 
   sherlog.info(
     {

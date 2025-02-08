@@ -35,6 +35,44 @@ class Sherlog {
 
   final Logger _logger;
 
+  void trace(
+    Object message, {
+    List<Object> headers = const [],
+    String? title,
+    Object? detail,
+    StackTrace? stackTrace,
+    bool showSource = false,
+  }) {
+    _log(
+      Level.trace,
+      message,
+      headers: headers,
+      title: title,
+      detail: detail,
+      stackTrace: stackTrace,
+      showSource: showSource,
+    );
+  }
+
+  void debug(
+    Object message, {
+    List<Object> headers = const [],
+    String? title,
+    Object? detail,
+    StackTrace? stackTrace,
+    bool showSource = false,
+  }) {
+    _log(
+      Level.debug,
+      message,
+      headers: headers,
+      title: title,
+      detail: detail,
+      stackTrace: stackTrace,
+      showSource: showSource,
+    );
+  }
+
   void info(
     Object message, {
     List<Object> headers = const [],
@@ -45,6 +83,63 @@ class Sherlog {
   }) {
     _log(
       Level.info,
+      message,
+      headers: headers,
+      title: title,
+      detail: detail,
+      stackTrace: stackTrace,
+      showSource: showSource,
+    );
+  }
+
+  void warning(
+    Object message, {
+    List<Object> headers = const [],
+    String? title,
+    Object? detail,
+    StackTrace? stackTrace,
+    bool showSource = false,
+  }) {
+    _log(
+      Level.warning,
+      message,
+      headers: headers,
+      title: title,
+      detail: detail,
+      stackTrace: stackTrace,
+      showSource: showSource,
+    );
+  }
+
+  void error(
+    Object message, {
+    List<Object> headers = const [],
+    String? title,
+    Object? detail,
+    StackTrace? stackTrace,
+    bool showSource = false,
+  }) {
+    _log(
+      Level.error,
+      message,
+      headers: headers,
+      title: title,
+      detail: detail,
+      stackTrace: stackTrace,
+      showSource: showSource,
+    );
+  }
+
+  void fatal(
+    Object message, {
+    List<Object> headers = const [],
+    String? title,
+    Object? detail,
+    StackTrace? stackTrace,
+    bool showSource = false,
+  }) {
+    _log(
+      Level.fatal,
       message,
       headers: headers,
       title: title,
@@ -66,18 +161,18 @@ class Sherlog {
     if (headers.isNotEmpty) _printHeader(level, headers);
 
     _printBody(
-      Level.info,
+      level,
       message,
       topDivider: headers.isEmpty,
       title: title,
     );
 
     if (detail != null) {
-      _printBody(Level.info, detail, topDivider: false);
+      _printBody(level, detail, topDivider: false);
     }
 
     if (stackTrace != null) {
-      _printBody(Level.info, stackTrace, topDivider: false);
+      _printBody(level, stackTrace, topDivider: false);
     }
 
     if (showSource) {
