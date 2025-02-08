@@ -82,7 +82,7 @@ class Sherlog {
     if (text is List || text is Map) {
       pretty = JsonEncoder.withIndent(' ').convert(text);
     } else {
-      pretty = text;
+      pretty = text.toString();
     }
 
     final parts = pretty.split('\n');
