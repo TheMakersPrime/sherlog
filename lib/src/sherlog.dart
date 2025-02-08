@@ -11,6 +11,9 @@ const _bottomLeft = '╚';
 const _vertical = '║';
 const _shortVertical = '‖';
 const _horizontal = '═';
+const _topRight = '╗';
+const _bottomRight = '╝';
+const _padding = ' ';
 
 class Sherlog {
   Sherlog({
@@ -60,17 +63,16 @@ class Sherlog {
     if (headers.isNotEmpty) {
       final headerOutput = headers.join(' $_shortVertical ');
       final header = '$_headerTopLeft $headerOutput $_shortVertical';
-      _logger.log(level, '$header${_horizontal * (lineLength - header.length)}');
+      _logger.log(level, '$header${_horizontal * (lineLength - header.length)}$_topRight');
     }
 
     if (headers.isEmpty && includeSeparation) {
-      _logger.log(level, '$_topLeft${_horizontal * (lineLength - 1)}');
+      _logger.log(level, '$_topLeft${_horizontal * (lineLength - 1)}$_topRight');
     }
-    // TODO (Ishwor) Break message to fit the line length
-    _logger.log(level, '$_vertical $prettyMessage');
+    _logger.log(level, prettyMessage);
 
     if (includeSeparation) {
-      _logger.log(level, '$_bottomLeft${_horizontal * (lineLength - 1)}');
+      _logger.log(level, '$_bottomLeft${_horizontal * (lineLength - 1)}$_bottomRight');
     }
   }
 
@@ -78,7 +80,7 @@ class Sherlog {
     final String pretty;
 
     if (text is List || text is Map) {
-      pretty = JsonEncoder.withIndent('   ').convert(text);
+      pretty = JsonEncoder.withIndent(' ').convert(text);
     } else {
       pretty = text;
     }
@@ -89,18 +91,39 @@ class Sherlog {
 
     final buffer = StringBuffer();
 
-    for (final (index, part) in parts.indexed) {
-      if (index == parts.length - 1) {
-        buffer.writeln('  ${_wrapText(part)}');
-      } else {
-        buffer.writeln(_wrapText(part));
-      }
+    for (final part in parts) {
+      buffer.writeln(_wrapText(part));
     }
 
     return buffer.toString().trimRight();
   }
 
   String _wrapText(String text) {
-    return text;
+    final parts = text.split(' ');
+    final buffer = StringBuffer();
+    final lineParts = <String>[];
+
+    for (final part in parts) {
+      final linePartLength = lineParts.join(' ').length;
+      final partLength = part.length + 1;
+      // Length of 2 vertical lines and 2 character on either sides
+      final probableLineLength = linePartLength + partLength + 4;
+
+      if (probableLineLength > lineLength) {
+        buffer.writeln(_addVerticalLines(lineParts.join(' ')));
+        lineParts.clear();
+      }
+      lineParts.add(part);
+    }
+    if (lineParts.isNotEmpty) {
+      buffer.writeln(_addVerticalLines(lineParts.join(' ')));
+      lineParts.clear();
+    }
+    return buffer.toString().trimRight();
+  }
+
+  String _addVerticalLines(String text) {
+    return '$_vertical $text${_padding * (lineLength - text.length - 3)} $_vertical';
   }
 }
+
