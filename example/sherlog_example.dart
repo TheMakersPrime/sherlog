@@ -3,21 +3,22 @@
 import 'package:sherlog/sherlog.dart';
 
 void main() {
-  final sherlog = Sherlog(lineLength: 50);
-  sherlog.info('Log body' * 10, headers: [
-    'Header 1',
-    'Header 2',
-    'Header 2',
-    'Header 2',
-  ]);
-  sherlog.info({
-    '0': 'value',
-    '1': 'value',
-    '2': 'value',
-    '3': 'value',
-    '4': 'value',
-    '5': 'value',
-    '6': 'value',
-    '7': 'value',
-  });
+  final sherlog = Sherlog(lineLength: 100);
+  sherlog.info(
+    headers: ['Header A', 'Header B'],
+    {
+      'num': 1,
+      'bool': true,
+      'string': 'Small and easy to use and extensible logger which prints beautiful logs.',
+      'string key of a long ass variant': 'Small and easy to use and extensible logger which prints beautiful logs. x',
+      'list': ['1', 2],
+      'map':{
+        'map':{
+          'map':{
+            'string key of a long ass variant':'Small and easy to use and extensible logger which prints beautiful logs. x Small and easy to use and extensible logger which prints beautiful logs. x'
+          }
+        }
+      }
+    },
+  );
 }
