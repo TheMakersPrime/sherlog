@@ -38,7 +38,6 @@ class Sherlog {
   void info(
     Object message, {
     List<Object> headers = const [],
-    bool includeSeparation = true,
     String? title,
     Object? detail,
     StackTrace? stackTrace,
@@ -47,40 +46,60 @@ class Sherlog {
       Level.info,
       message,
       headers: headers,
+      title: title,
       detail: detail,
       stackTrace: stackTrace,
-      includeSeparation: includeSeparation,
-      title: title,
     );
   }
 
   void _log(
     Level level,
-    dynamic message, {
+    Object message, {
     List<Object> headers = const [],
-    required bool includeSeparation,
     String? title,
     Object? detail,
     StackTrace? stackTrace,
   }) {
-    final prettyMessage = _prettifyText(message);
-    if (headers.isNotEmpty) {
-      final headerOutput = headers.join(' $_shortVertical ');
-      final header = '$_headerTopLeft $headerOutput $_shortVertical';
-      _logger.log(level, '$header${_horizontal * (lineLength - header.length)}$_topRight');
+    if (headers.isNotEmpty) _printHeader(level, headers);
+
+    _printBody(
+      Level.info,
+      message,
+      topDivider: headers.isEmpty,
+      title: title,
+    );
+
+    if (detail != null) {
+      _printBody(Level.info, detail, topDivider: false);
     }
 
-    if (headers.isEmpty && includeSeparation) {
+    if (stackTrace!= null) {
+      _printBody(Level.info, stackTrace, topDivider: false);
+    }
+  }
+
+  void _printHeader(Level level, List<Object> headers) {
+    final headerOutput = headers.join(' $_shortVertical ');
+    final header = '$_headerTopLeft $headerOutput $_shortVertical';
+    _logger.log(level, '$header${_horizontal * (lineLength - header.length)}$_topRight');
+  }
+
+  void _printBody(
+    Level level,
+    dynamic message, {
+    required bool topDivider,
+    String? title,
+  }) {
+    final prettyMessage = _prettifyText(message);
+
+    if (topDivider) {
       _logger.log(level, '$_topLeft${_horizontal * (lineLength - 1)}$_topRight');
     }
     if (title != null && title.isNotEmpty) {
       _logger.log(level, _addVerticalLines('$title:', isTitle: true));
     }
     _logger.log(level, prettyMessage);
-
-    if (includeSeparation) {
-      _logger.log(level, '$_bottomLeft${_horizontal * (lineLength - 1)}$_bottomRight');
-    }
+    _logger.log(level, '$_bottomLeft${_horizontal * (lineLength - 1)}$_bottomRight');
   }
 
   String _prettifyText(dynamic text) {
