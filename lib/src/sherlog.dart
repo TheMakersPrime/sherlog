@@ -38,6 +38,7 @@ class Sherlog {
     Object message, {
     List<Object> headers = const [],
     bool includeSeparation = true,
+    String? title,
     Object? detail,
     StackTrace? stackTrace,
   }) {
@@ -48,6 +49,7 @@ class Sherlog {
       detail: detail,
       stackTrace: stackTrace,
       includeSeparation: includeSeparation,
+      title: title,
     );
   }
 
@@ -56,6 +58,7 @@ class Sherlog {
     dynamic message, {
     List<Object> headers = const [],
     required bool includeSeparation,
+    String? title,
     Object? detail,
     StackTrace? stackTrace,
   }) {
@@ -68,6 +71,9 @@ class Sherlog {
 
     if (headers.isEmpty && includeSeparation) {
       _logger.log(level, '$_topLeft${_horizontal * (lineLength - 1)}$_topRight');
+    }
+    if (title != null && title.isNotEmpty) {
+      _logger.log(level, _addVerticalLines(title, isTitle: true));
     }
     _logger.log(level, prettyMessage);
 
@@ -122,8 +128,8 @@ class Sherlog {
     return buffer.toString().trimRight();
   }
 
-  String _addVerticalLines(String text) {
-    return '$_vertical $text${_padding * (lineLength - text.length - 3)} $_vertical';
+  String _addVerticalLines(String text, {bool isTitle = false}) {
+    final leftPadding = isTitle ? '' : ' ';
+    return '$_vertical$leftPadding$text${_padding * (lineLength - text.length - (leftPadding.isEmpty ? 2 : 3))} $_vertical';
   }
 }
-

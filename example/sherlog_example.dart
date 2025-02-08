@@ -5,7 +5,6 @@ import 'package:sherlog/sherlog.dart';
 void main() {
   final sherlog = Sherlog(lineLength: 100);
   sherlog.info(
-    headers: ['Header A', 'Header B'],
     {
       'num': 1,
       'bool': true,
@@ -20,5 +19,7 @@ void main() {
         }
       }
     },
+    // headers: ['Header A', 'Header B'],
+    title: 'Body'
   );
 }
