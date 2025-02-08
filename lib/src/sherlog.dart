@@ -9,6 +9,7 @@ const _headerTopLeft = '╔╣';
 const _topLeft = '╔';
 const _bottomLeft = '╚';
 const _vertical = '║';
+const _verticalWithPoint = '╟';
 const _shortVertical = '‖';
 const _horizontal = '═';
 const _topRight = '╗';
@@ -73,7 +74,7 @@ class Sherlog {
       _logger.log(level, '$_topLeft${_horizontal * (lineLength - 1)}$_topRight');
     }
     if (title != null && title.isNotEmpty) {
-      _logger.log(level, _addVerticalLines(title, isTitle: true));
+      _logger.log(level, _addVerticalLines('$title:', isTitle: true));
     }
     _logger.log(level, prettyMessage);
 
@@ -130,6 +131,7 @@ class Sherlog {
 
   String _addVerticalLines(String text, {bool isTitle = false}) {
     final leftPadding = isTitle ? '' : ' ';
-    return '$_vertical$leftPadding$text${_padding * (lineLength - text.length - (leftPadding.isEmpty ? 2 : 3))} $_vertical';
+    final leftVerticalLine = isTitle ? _verticalWithPoint : _vertical;
+    return '$leftVerticalLine$leftPadding$text${_padding * (lineLength - text.length - (leftPadding.isEmpty ? 2 : 3))} $_vertical';
   }
 }

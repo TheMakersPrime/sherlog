@@ -19,7 +19,7 @@ void main() {
         }
       }
     },
-    // headers: ['Header A', 'Header B'],
+    headers: ['Header A', 'Header B'],
     title: 'Body'
   );
 }
