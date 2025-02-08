@@ -6,26 +6,12 @@ void main() {
   final sherlog = Sherlog(
     level: LogLevel.all,
     lineLength: 100,
+    levelColors: {
+      LogLevel.trace: AnsiColor.fg(ConsoleColor.violet.code),
+      LogLevel.fatal: AnsiColor.fg(ConsoleColor.purple.code),
+    },
   );
 
-  sherlog.info(
-    {
-      'num': 1,
-      'bool': true,
-      'string': 'Small and easy to use and extensible logger which prints beautiful logs.',
-      'string key of a long ass variant': 'Small and easy to use and extensible logger which prints beautiful logs. x',
-      'list': ['1', 2],
-      'map': {
-        'map': {
-          'map': {
-            'string key of a long ass variant':
-                'Small and easy to use and extensible logger which prints beautiful logs. x Small and easy to use and extensible logger which prints beautiful logs. x'
-          }
-        }
-      }
-    },
-    headers: ['Header A', 'Header B'],
-    title: 'Body',
-    showSource: true,
-  );
+  sherlog.trace('Info');
+  sherlog.fatal('Info');
 }

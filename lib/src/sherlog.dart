@@ -20,6 +20,7 @@ class Sherlog {
   Sherlog({
     this.lineLength = 100,
     this.level = LogLevel.trace,
+    Map<LogLevel, AnsiColor>? levelColors,
   }) : _logger = Logger(
           level: level.loggerLevel,
           printer: PrettyPrinter(
@@ -27,6 +28,7 @@ class Sherlog {
             noBoxingByDefault: true,
             lineLength: lineLength,
             printEmojis: false,
+            levelColors: levelColors?.map((key, value) => MapEntry(key.loggerLevel, value)),
           ),
         );
 
