@@ -41,6 +41,7 @@ class Sherlog {
     String? title,
     Object? detail,
     StackTrace? stackTrace,
+    bool showSource = false,
   }) {
     _log(
       Level.info,
@@ -49,12 +50,14 @@ class Sherlog {
       title: title,
       detail: detail,
       stackTrace: stackTrace,
+      showSource: showSource,
     );
   }
 
   void _log(
     Level level,
     Object message, {
+    required bool showSource,
     List<Object> headers = const [],
     String? title,
     Object? detail,
@@ -73,8 +76,21 @@ class Sherlog {
       _printBody(Level.info, detail, topDivider: false);
     }
 
-    if (stackTrace!= null) {
+    if (stackTrace != null) {
       _printBody(Level.info, stackTrace, topDivider: false);
+    }
+
+    if (showSource) {
+      final trace = StackTrace.current.toString();
+      final traceParts = trace.split('\n');
+
+      if (traceParts.length > 2) {
+        _printBody(
+          level,
+          traceParts[2],
+          topDivider: headers.isEmpty,
+        );
+      }
     }
   }
 
