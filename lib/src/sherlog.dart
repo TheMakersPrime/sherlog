@@ -34,7 +34,7 @@ class Sherlog {
     bool showSource = false,
   }) {
     log(
-      Level.trace,
+      LogLevel.trace,
       message,
       headers: headers,
       title: title,
@@ -53,7 +53,7 @@ class Sherlog {
     bool showSource = false,
   }) {
     log(
-      Level.debug,
+      LogLevel.debug,
       message,
       headers: headers,
       title: title,
@@ -72,7 +72,7 @@ class Sherlog {
     bool showSource = false,
   }) {
     log(
-      Level.info,
+      LogLevel.info,
       message,
       headers: headers,
       title: title,
@@ -91,7 +91,7 @@ class Sherlog {
     bool showSource = false,
   }) {
     log(
-      Level.warning,
+      LogLevel.warning,
       message,
       headers: headers,
       title: title,
@@ -110,7 +110,7 @@ class Sherlog {
     bool showSource = false,
   }) {
     log(
-      Level.error,
+      LogLevel.error,
       message,
       headers: headers,
       title: title,
@@ -129,7 +129,7 @@ class Sherlog {
     bool showSource = false,
   }) {
     log(
-      Level.fatal,
+      LogLevel.fatal,
       message,
       headers: headers,
       title: title,
@@ -140,7 +140,7 @@ class Sherlog {
   }
 
   void log(
-    Level level,
+    LogLevel level,
     Object message, {
     required bool showSource,
     List<Object> headers = const [],
@@ -148,21 +148,22 @@ class Sherlog {
     Object? detail,
     StackTrace? stackTrace,
   }) {
-    if (headers.isNotEmpty) _printHeader(level, headers);
+    final resolvedLevel = level.loggerLevel;
+    if (headers.isNotEmpty) _printHeader(resolvedLevel, headers);
 
     _printBody(
-      level,
+      resolvedLevel,
       message,
       topDivider: headers.isEmpty,
       title: title,
     );
 
     if (detail != null) {
-      _printBody(level, detail, topDivider: false);
+      _printBody(resolvedLevel, detail, topDivider: false);
     }
 
     if (stackTrace != null) {
-      _printBody(level, stackTrace, topDivider: false);
+      _printBody(resolvedLevel, stackTrace, topDivider: false);
     }
 
     if (showSource) {
@@ -171,7 +172,7 @@ class Sherlog {
 
       if (traceParts.length > 2) {
         _printBody(
-          level,
+          resolvedLevel,
           traceParts[2],
           topDivider: headers.isEmpty,
         );
