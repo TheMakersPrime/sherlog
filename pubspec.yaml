@@ -1,6 +1,6 @@
 name: sherlog
 description: A logging package
-version: 1.0.2
+version: 1.0.3
 repository: https://github.com/TheMakersPrime/sherlog
 
 environment:
