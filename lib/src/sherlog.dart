@@ -33,7 +33,7 @@ class Sherlog {
     StackTrace? stackTrace,
     bool showSource = false,
   }) {
-    _log(
+    log(
       Level.trace,
       message,
       headers: headers,
@@ -52,7 +52,7 @@ class Sherlog {
     StackTrace? stackTrace,
     bool showSource = false,
   }) {
-    _log(
+    log(
       Level.debug,
       message,
       headers: headers,
@@ -71,7 +71,7 @@ class Sherlog {
     StackTrace? stackTrace,
     bool showSource = false,
   }) {
-    _log(
+    log(
       Level.info,
       message,
       headers: headers,
@@ -90,7 +90,7 @@ class Sherlog {
     StackTrace? stackTrace,
     bool showSource = false,
   }) {
-    _log(
+    log(
       Level.warning,
       message,
       headers: headers,
@@ -109,7 +109,7 @@ class Sherlog {
     StackTrace? stackTrace,
     bool showSource = false,
   }) {
-    _log(
+    log(
       Level.error,
       message,
       headers: headers,
@@ -128,7 +128,7 @@ class Sherlog {
     StackTrace? stackTrace,
     bool showSource = false,
   }) {
-    _log(
+    log(
       Level.fatal,
       message,
       headers: headers,
@@ -139,7 +139,7 @@ class Sherlog {
     );
   }
 
-  void _log(
+  void log(
     Level level,
     Object message, {
     required bool showSource,
