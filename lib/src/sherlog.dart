@@ -5,17 +5,6 @@ import 'dart:convert';
 import 'package:logger/logger.dart';
 import 'package:sherlog/sherlog.dart';
 
-const _headerTopLeft = '╔╣';
-const _topLeft = '╔';
-const _bottomLeft = '╚';
-const _vertical = '║';
-const _verticalWithPoint = '╟';
-const _shortVertical = '‖';
-const _horizontal = '═';
-const _topRight = '╗';
-const _bottomRight = '╝';
-const _padding = ' ';
-
 class Sherlog {
   Sherlog({
     this.lineLength = 100,
@@ -267,3 +256,14 @@ class Sherlog {
     return '$leftVerticalLine$leftPadding$text${_padding * (lineLength - text.length - (leftPadding.isEmpty ? 2 : 3))} $_vertical';
   }
 }
+
+const _headerTopLeft = '╔╣';
+const _topLeft = '╔';
+const _bottomLeft = '╚';
+const _vertical = '║';
+const _verticalWithPoint = '╟';
+const _shortVertical = '‖';
+const _horizontal = '═';
+const _topRight = '╗';
+const _bottomRight = '╝';
+const _padding = ' ';
