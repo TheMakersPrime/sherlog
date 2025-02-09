@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 
-import 'package:logger/logger.dart';
 import 'package:sherlog/sherlog.dart';
 
 class Sherlog {
@@ -198,7 +197,7 @@ class Sherlog {
       _logger.log(level, '$_topLeft${_horizontal * (lineLength - 1)}$_topRight');
     }
     if (title != null && title.isNotEmpty) {
-      _logger.log(level, _addVerticalLines('$title:', isTitle: true));
+      _logger.log(level, _wrapLine('$title:', isTitle: true));
     }
     _logger.log(level, prettyMessage);
     _logger.log(level, '$_bottomLeft${_horizontal * (lineLength - 1)}$_bottomRight');
@@ -238,19 +237,35 @@ class Sherlog {
       final probableLineLength = linePartLength + partLength + 4;
 
       if (probableLineLength > lineLength) {
-        buffer.writeln(_addVerticalLines(lineParts.join(' ')));
-        lineParts.clear();
+        final line = lineParts.join(' ');
+        if (line.isNotEmpty) {
+          buffer.writeln(_wrapLine(line));
+          lineParts.clear();
+        }
       }
       lineParts.add(part);
     }
     if (lineParts.isNotEmpty) {
-      buffer.writeln(_addVerticalLines(lineParts.join(' ')));
+      buffer.writeln(_wrapLine(lineParts.join(' ')));
       lineParts.clear();
     }
     return buffer.toString().trimRight();
   }
 
-  String _addVerticalLines(String text, {bool isTitle = false}) {
+  String _wrapLine(String line, {bool isTitle = false}) {
+    final limit = lineLength - 4;
+    if (line.length < limit) return _addVerticalLines(line, isTitle: isTitle);
+
+    final buffer = StringBuffer();
+    for (int i = 0; i < line.length; i += limit) {
+      final wrappedLine = line.substring(i, i + limit > line.length ? line.length : i + limit);
+      buffer.writeln(_addVerticalLines(wrappedLine, isTitle: isTitle));
+    }
+
+    return buffer.toString().trim();
+  }
+
+  String _addVerticalLines(String text, {required bool isTitle}) {
     final leftPadding = isTitle ? '' : ' ';
     final leftVerticalLine = isTitle ? _verticalWithPoint : _vertical;
     return '$leftVerticalLine$leftPadding$text${_padding * (lineLength - text.length - (leftPadding.isEmpty ? 2 : 3))} $_vertical';
